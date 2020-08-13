@@ -1,55 +1,51 @@
-import React, { useState } from 'react';
-import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
-import { v4 as uuidv4} from 'uuid';
+import React, { useEffect } from "react";
+import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import { connect } from 'react-redux';
+import { getRecipes, deleteRecipe } from '../actions/recipeActions';
+import PropTypes from 'prop-types';
 
-const RecipeList = () => {
+const RecipeList = (props) => {
   
-  const [recipes, setRecipes] = useState([
-    {id: uuidv4(), name: 'Chicken Stir Fry'},
-    {id: uuidv4(), name: 'Spaghetti Bolognese'},
-    {id: uuidv4(), name: "Sepherd's Pie"}
-  ]);
-
-  const addRecipeHandler = (name) => {
-    setRecipes([...recipes, {id: uuidv4(), name}])
-  }
-
+  useEffect(() => {
+    props.getRecipes();
+  }, []);
+  
   const deleteRecipeHandler = (id) => {
-    recipes.filter(recipe => recipe.id != id)
-    setRecipes(recipes.filter(recipe => recipe.id != id))
-  }
-  
-  return(
-    
+    props.deleteRecipe(id);
+  };
+
+  const { recipes } = props.recipe;
+  return (
     <Container>
-        <Button 
-          color="dark" 
-          style={{marginBottom: '2rem'}}
-          onClick={() => {
-            const name = prompt('Enter Item');
-            if(name) {
-              addRecipeHandler(name);
-            }
-          }}>
-          Add Item
-        </Button>
-        <ListGroup>
-            {recipes.map(({id, name}) => ( 
-              <ListGroupItem key={id}>
-                <Button
-                  className="remove-btn mr-2"
-                  color="danger"
-                  size="sm"
-                  onClick={ () => {
-                    deleteRecipeHandler(id)
-                  }}>&times;
-                </Button>
-                {name}
-              </ListGroupItem>
-            ))}
-        </ListGroup>
-      </Container>
-  )
+      <ListGroup>
+        {recipes.map(({ id, name }) => (
+          <ListGroupItem key={id}>
+            <Button
+              className="remove-btn mr-2"
+              color="danger"
+              size="sm"
+              onClick={() => {
+                deleteRecipeHandler(id);
+              }}
+            >
+              &times;
+            </Button>
+            {name}
+          </ListGroupItem>
+        ))}
+      </ListGroup>
+    </Container>
+  );
+};
+
+RecipeList.propTypes = {
+  getRecipes: PropTypes.func.isRequired,
+  deleteRecipe: PropTypes.func.isRequired,
+  recipe: PropTypes.object.isRequired
 }
 
-export default RecipeList;
+const mapStateToProps = (state) => ({
+  recipe: state.recipe
+});
+
+export default connect(mapStateToProps, { getRecipes, deleteRecipe})(RecipeList);
