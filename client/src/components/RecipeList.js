@@ -18,14 +18,14 @@ const RecipeList = (props) => {
   return (
     <Container>
       <ListGroup>
-        {recipes.map(({ id, name }) => (
-          <ListGroupItem key={id}>
+        {recipes.map(({ _id, name }) => (
+          <ListGroupItem key={_id}>
             <Button
               className="remove-btn mr-2"
               color="danger"
               size="sm"
               onClick={() => {
-                deleteRecipeHandler(id);
+                deleteRecipeHandler(_id);
               }}
             >
               &times;
