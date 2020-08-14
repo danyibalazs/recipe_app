@@ -7,32 +7,42 @@ import {
   FormGroup,
   Label,
   Input,
-  ModalHeader
+  ModalHeader,
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addRecipe } from '../actions/recipeActions';
-import { v4 as uuidv4} from 'uuid';
 
 const RecipeModal = (props) => {
 
   const [modal, setModal] = useState(false);
   const [name, setName] = useState('');
+  const [ingredients, setIngredinets] = useState('');
+  const [method, setMethod] = useState('');
   
 
   const toggle = () => {
     setModal(!modal);
   }
 
-  const onChange = (e) => {
+  const onNameChange = (e) => {
     setName(e.target.value);
+  }
+
+  const onIngredientsChange = (e) => {
+    setIngredinets(e.target.value);
+  }
+
+  const onMethodChange = (e) => {
+    setMethod(e.target.value);
   }
 
   const onSubmit = e => {
     e.preventDefault();
 
     const newRecipe = {
-      id: uuidv4(), 
-      name
+      name,
+      ingredients,
+      method
     }
 
     // Add item via addItem action
@@ -42,8 +52,7 @@ const RecipeModal = (props) => {
     toggle();
   }
 
-  
-    return(
+  return(
       <div>
         <Button
           color="dark"
@@ -55,30 +64,52 @@ const RecipeModal = (props) => {
           isOpen={modal}
           toggle={toggle}>
           <ModalHeader toggle={toggle}>
-            Add To List
+            New Recipe
           </ModalHeader>
           <ModalBody>
             <Form onSubmit={onSubmit}>
               <FormGroup>
-                <Label for="item">Recipe</Label>
+                <Label for="recipe-name">Name:</Label>
                 <Input
                   type="text"
                   name="name"
-                  id="item"
-                  placeholder="Add new recipe"
-                  onChange={onChange}
+                  id="recipe-name"
+                  placeholder="Add recipe name"
+                  onChange={onNameChange}
+                />       
+              </FormGroup>
+              <FormGroup>
+                <Label for="recipe-ingredients">Ingredients:</Label>
+                <Input 
+                  rows="5" 
+                  type="textarea" 
+                  name="ingredients" 
+                  id="recipe-ingredients" 
+                  placeholder="Add ingredients separated by commas" 
+                  onChange={onIngredientsChange}
                 />
-                <Button
+              </FormGroup>
+              <FormGroup>
+                <Label for="recipe-method">Method:</Label>
+                <Input 
+                  rows="10" 
+                  type="textarea" 
+                  name="method" 
+                  id="recipe-method" 
+                  placeholder="Add instructions separated by commas" 
+                  onChange={onMethodChange}
+                />
+              </FormGroup>
+              <Button
                   color="dark"
                   style={{marginTop: '2rem'}}
                   block
                 >Add Recipe</Button>
-              </FormGroup>
             </Form>
           </ModalBody>
         </Modal>
       </div>
-    );
+  );
 }
 
 const mapStateToProps = state => ({

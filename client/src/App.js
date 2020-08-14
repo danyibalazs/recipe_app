@@ -2,7 +2,7 @@ import React from 'react';
 
 import AppNavbar from './components/AppNavbar';
 import RecipeList from './components/RecipeList';
-import RecopeModal from './components/RecipeModal';
+import RecipeModal from './components/RecipeModal';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -15,9 +15,9 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <AppNavbar />
+        <AppNavbar /> 
         <Container>
-          <RecopeModal />
+          <RecipeModal />
           <RecipeList />
         </Container>
         

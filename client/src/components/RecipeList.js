@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import RecipeItem from './RecipeItem';
+
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { connect } from 'react-redux';
 import { getRecipes, deleteRecipe } from '../actions/recipeActions';
@@ -15,12 +17,11 @@ const RecipeList = (props) => {
   };
 
   const { recipes } = props.recipe;
-  return (
-    <Container>
+  return ( 
       <ListGroup>
-        {recipes.map(({ _id, name }) => (
-          <ListGroupItem key={_id}>
-            <Button
+        {recipes.map((recipe) => (
+          <ListGroupItem key={recipe._id}>
+            {/* <Button
               className="remove-btn mr-2"
               color="danger"
               size="sm"
@@ -29,12 +30,14 @@ const RecipeList = (props) => {
               }}
             >
               &times;
-            </Button>
-            {name}
+            </Button> */}
+            <RecipeItem 
+              recipe={recipe}
+            />
+
           </ListGroupItem>
         ))}
-      </ListGroup>
-    </Container>
+      </ListGroup>  
   );
 };
 

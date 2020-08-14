@@ -17,7 +17,9 @@ router.get('/', (req, res) => {
 // @access Public
 router.post('/', (req, res) => {
   const newRecipe = new Recipe({
-    name: req.body.name
+    name: req.body.name,
+    ingredients: req.body.ingredients,
+    method: req.body.method
   });
 
   newRecipe.save()
