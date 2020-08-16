@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import RecipeItem from './RecipeItem';
 
-import { ListGroup, ListGroupItem, Button } from "reactstrap";
+import { ListGroup, ListGroupItem } from "reactstrap";
 import { connect } from 'react-redux';
 import { getRecipes } from '../actions/recipeActions';
 import PropTypes from 'prop-types';
@@ -17,16 +17,6 @@ const RecipeList = (props) => {
       <ListGroup>
         {recipes.map((recipe) => (
           <ListGroupItem key={recipe._id}>
-            {/* <Button
-              className="remove-btn mr-2"
-              color="danger"
-              size="sm"
-              onClick={() => {
-                deleteRecipeHandler(_id);
-              }}
-            >
-              &times;
-            </Button> */}
             <RecipeItem 
               recipe={recipe}
             />

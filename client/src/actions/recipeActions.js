@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_RECIPES, ADD_RECIPE, DELETE_RECIPE, RECIPES_LOADING } from './types';
+import { GET_RECIPES, ADD_RECIPE, DELETE_RECIPE, RECIPES_LOADING, UPDATE_RECIPE } from './types';
 
 export const getRecipes = () => dispatch => {
  dispatch(setRecipesLoading());
@@ -19,6 +19,17 @@ export const addRecipe = recipe => dispatch => {
     .then(res => 
       dispatch({
         type: ADD_RECIPE,
+        payload: res.data
+      })
+    )
+};
+
+export const updateRecipe = (id, recipe) => dispatch => {
+  axios
+    .patch(`/api/recipes/${id}`, recipe)
+    .then(res =>
+      dispatch({
+        type: UPDATE_RECIPE,
         payload: res.data
       })
     )
