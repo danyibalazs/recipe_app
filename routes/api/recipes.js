@@ -26,6 +26,15 @@ router.post('/', (req, res) => {
     .then(recipe => res.json(recipe));
 });
 
+router.patch('/:id', (req, res) => {
+  const { name, ingredients, method} = req.body;
+  const recipeId = req.params.id;
+
+  Recipe.findByIdAndUpdate(recipeId, {name, ingredients, method})
+  .then(() => res.json({success: true}))
+  .catch(err => res.status(404).json({success: false}));
+})
+
 // @route DELETE api/recipes/:id
 // @desc Delete A Recipe
 // @access Public
