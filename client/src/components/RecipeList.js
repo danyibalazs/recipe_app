@@ -8,11 +8,13 @@ import PropTypes from 'prop-types';
 
 const RecipeList = (props) => {
   
+  const { recipes } = props.recipe;
+  
   useEffect(() => {
     props.getRecipes();
   }, []);
   
-  const { recipes } = props.recipe;
+  
   return ( 
       <ListGroup>
         {recipes.map((recipe) => (
