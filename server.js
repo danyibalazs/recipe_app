@@ -1,26 +1,28 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const path = require('path');
-
-const recipes = require('./routes/api/recipes');
 
 const app = express();
 
 // Bodyparser Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 // DB Config
-const db = require('./config/keys').mongoURI;
+const db = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-xgzvb.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 // Connect to MongoDB
 mongoose
-  .connect(db)
+  .connect(db, {
+    useNewUrlParser: true,
+    useCreateIndex: true
+  })
   .then(()=> console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/recipes', recipes);
+app.use('/api/recipes', require('./routes/api/recipes'));
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/auth', require('./routes/api/auth'));
 
 // Serve static assets if in production
 if(process.env.NODE_ENV === 'production') {
