@@ -8,6 +8,8 @@ import {
   NavItem,
   NavLink,
 } from "reactstrap";
+import RegisterModal from './auth/RegisterModal';
+import Logout from './auth/Logout';
 
 const AppNavbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,9 +23,10 @@ const AppNavbar = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="https://github.com/danyibalazs/recipe_app">
-                GitHub
-              </NavLink>
+              <RegisterModal />
+            </NavItem>
+            <NavItem>
+              <Logout />
             </NavItem>
           </Nav>
         </Collapse>
