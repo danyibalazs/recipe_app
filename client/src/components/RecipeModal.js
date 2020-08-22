@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addRecipe } from '../actions/recipeActions';
+import { PropTypes } from 'prop-types';
 
 const RecipeModal = (props) => {
 
@@ -18,6 +19,10 @@ const RecipeModal = (props) => {
   const [name, setName] = useState('');
   const [ingredients, setIngredinets] = useState('');
   const [method, setMethod] = useState('');
+
+  RecipeModal.propTypes = {
+    isAuthenticated: PropTypes.bool
+  }
   
 
   const toggle = () => {
@@ -54,12 +59,13 @@ const RecipeModal = (props) => {
 
   return(
       <div>
-        <Button
+        { props.isAuthenticated ? <Button
           color="dark"
           style={{marginBottom: '2rem'}}
           onClick={toggle}>
           Add Recipe
-        </Button>
+        </Button> : <h4 className="mb-3 ml-4">Please log in to manage recipes!</h4>}
+        
         <Modal
           isOpen={modal}
           toggle={toggle}>
@@ -113,7 +119,8 @@ const RecipeModal = (props) => {
 }
 
 const mapStateToProps = state => ({
-  recipe: state.recipe
+  recipe: state.recipe,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { addRecipe })(RecipeModal);

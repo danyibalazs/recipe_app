@@ -4,18 +4,21 @@ import { Collapse, Button } from 'reactstrap';
 import DeleteModal from './DeleteModal';
 import EditModal from './EditModal';
 
-const RecipeItem = ({recipe}) => {
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+const RecipeItem = (props) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const ingredientArr = recipe.ingredients.split('\n');
-  const methodArr = recipe.method.split('\n\n');
+  const ingredientArr = props.recipe.ingredients.split('\n');
+  const methodArr = props.recipe.method.split('\n\n');
 
   return (
     <div>
-      <span style={{fontSize: '1.2rem'}}>{recipe.name}</span>
+      <span style={{fontSize: '1.2rem'}}>{props.recipe.name}</span>
       <Button color="secondary" onClick={toggle} className="float-right">View</Button>
       <Collapse isOpen={isOpen}>
           <h6 className="mt-3" >Ingredients:</h6>
@@ -30,12 +33,24 @@ const RecipeItem = ({recipe}) => {
           <hr />
           <div>
             <Button color="secondary" onClick={toggle} className="float-left mr-2">Close</Button>
-            <EditModal selectedRecipe={recipe} />
-            <DeleteModal selectedRecipe={recipe} />
+            {props.isAuthenticated ?
+              <div>
+                <EditModal selectedRecipe={props.recipe} />
+                <DeleteModal selectedRecipe={props.recipe} />
+              </div> 
+            : null}   
           </div>         
       </Collapse>
     </div>
   )
 }
 
-export default RecipeItem;
+RecipeItem.propTypes = {
+ isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, null)(RecipeItem);
