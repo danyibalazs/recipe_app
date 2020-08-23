@@ -20,11 +20,6 @@ const RecipeModal = (props) => {
   const [ingredients, setIngredinets] = useState('');
   const [method, setMethod] = useState('');
 
-  RecipeModal.propTypes = {
-    isAuthenticated: PropTypes.bool
-  }
-  
-
   const toggle = () => {
     setModal(!modal);
   }
@@ -47,7 +42,8 @@ const RecipeModal = (props) => {
     const newRecipe = {
       name,
       ingredients,
-      method
+      method,
+      creator: props.user   
     }
 
     // Add item via addItem action
@@ -118,9 +114,15 @@ const RecipeModal = (props) => {
   );
 }
 
+RecipeModal.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  user: PropTypes.object
+}
+
 const mapStateToProps = state => ({
   recipe: state.recipe,
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user
 });
 
 export default connect(mapStateToProps, { addRecipe })(RecipeModal);

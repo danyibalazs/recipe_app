@@ -13,14 +13,15 @@ const RecipeItem = (props) => {
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const ingredientArr = props.recipe.ingredients.split('\n');
-  const methodArr = props.recipe.method.split('\n\n');
+  const ingredientArr = props.recipe.ingredients.trim().split('\n');
+  const methodArr = props.recipe.method.trim().split('\n\n');
 
   return (
     <div>
       <span style={{fontSize: '1.2rem'}}>{props.recipe.name}</span>
       <Button color="secondary" onClick={toggle} className="float-right">View</Button>
       <Collapse isOpen={isOpen}>
+          <p className="mt-2">Creator: {props.recipe.creator.name}</p>
           <h6 className="mt-3" >Ingredients:</h6>
           <ul>
             {ingredientArr.map((ingredient) => <li  key={ingredient}>{ingredient}</li> )}
@@ -33,12 +34,12 @@ const RecipeItem = (props) => {
           <hr />
           <div>
             <Button color="secondary" onClick={toggle} className="float-left mr-2">Close</Button>
-            {props.isAuthenticated ?
+            {props.isAuthenticated && props.recipe.creator._id === props.user._id &&
               <div>
                 <EditModal selectedRecipe={props.recipe} />
                 <DeleteModal selectedRecipe={props.recipe} />
               </div> 
-            : null}   
+            }   
           </div>         
       </Collapse>
     </div>
@@ -46,11 +47,13 @@ const RecipeItem = (props) => {
 }
 
 RecipeItem.propTypes = {
- isAuthenticated: PropTypes.bool
+ isAuthenticated: PropTypes.bool,
+ user: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user
 });
 
 export default connect(mapStateToProps, null)(RecipeItem);
